@@ -1,0 +1,31 @@
+<% content_for :page_title do %>
+  <%= link_to Spree.t(:reports), spree.admin_reports_url %> /
+  <%= Spree.t(:out_of_stock) %>
+<% end %>
+
+<div class="well">
+  <%= render partial: 'spree/admin/shared/report_order_criteria', locals: {url: spree.out_of_stock_admin_reports_path, field_gt: :created_at_gt, field_lt: :created_at_lt} %>
+</div>
+
+<table class="table table-bordered admin-report" data-hook="out_of_stock">
+  <thead>
+    <tr>
+      <th><%= Spree.t(:date) %></th>
+      <th><%= Spree.t(:variant) %></th>
+      <th><%= Spree.t(:location) %></th>
+      <th><%= Spree.t(:quantity) %></th>
+      <th><%= Spree.t(:stock_total) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @movements.each do |movement| %>
+      <tr>
+        <td><%= movement.created_at.strftime('%F') %></td>
+        <td><%= movement.stock_item.variant.sku %></td>
+        <td><%= movement.stock_item.stock_location.name %></td>
+        <td><%= movement.quantity %></td>
+        <td><%= movement.total %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
